@@ -23,3 +23,8 @@ frontend/.env
 
 # Environment variables
 .env
+
+#backend
+
+backend/.env
+backend/node_modules/
