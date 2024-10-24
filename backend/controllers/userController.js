@@ -57,8 +57,56 @@ const loginUser = async (req, res) => {
             token
         });
     } catch (error) {
+        console.log("Error: ", error)
         res.status(500).json({ message: 'Error al iniciar sesión' });
     }
 };
 
-module.exports = { registerUser, loginUser };
+
+
+
+// Obtener perfil del usuario autenticado
+const getUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id); // Usamos el ID del usuario autenticado
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({
+            name: user.name,
+            email: user.email,
+            bio: user.bio,
+            avatar: user.avatar,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener perfil' });
+    }
+};
+
+// Actualizar perfil del usuario autenticado
+const updateUserProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id); // Usamos el ID del usuario autenticado
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        user.name = req.body.name || user.name;
+        user.bio = req.body.bio || user.bio;
+        user.avatar = req.body.avatar || user.avatar; // Permitir cambiar avatar
+
+        await user.save();
+
+        res.json({
+            name: user.name,
+            email: user.email,
+            bio: user.bio,
+            avatar: user.avatar,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar perfil' });
+    }
+};
+
+module.exports = { registerUser, loginUser, getUserProfile, updateUserProfile };

@@ -18,6 +18,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    avatar: {
+        type: String,
+        default: 'default-avatar.png' // Puedes cambiar esto por la ruta de una imagen por defecto
+    },
     role: {
         type: String,
         enum: ['user', 'admin'],

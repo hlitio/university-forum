@@ -1,34 +1,42 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Alert, Card } from 'react-bootstrap';
-import { loginUser } from '../services/api';
-import { useNavigate, Link } from 'react-router-dom';
+import { registerUser } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(''); // Para mostrar errores
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await loginUser({ email, password });
-            localStorage.setItem('token', response.data.token);  
-            localStorage.setItem('userName', response.data.name);
-            localStorage.setItem('userId', response.data._id); 
-            navigate('/'); 
+            await registerUser({ name, email, password });
+            navigate('/login'); // Redirigir al login después del registro
         } catch (error) {
-            setErrorMessage('Error en el login. Verifica tus credenciales.');
+            setErrorMessage('Error al registrarse. Inténtalo de nuevo.');
         }
     };
 
     return (
         <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
             <Card style={{ width: '25rem' }} className="p-4 shadow">
-                <h2 className="text-center mb-4">Iniciar Sesión</h2>
+                <h2 className="text-center mb-4">Registrarse</h2>
                 {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="email">
+                    <Form.Group controlId="name">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Introduce tu nombre"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </Form.Group>
+
+                    <Form.Group controlId="email" className="mt-3">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
                             type="email"
@@ -49,15 +57,12 @@ const Login = () => {
                     </Form.Group>
 
                     <Button variant="primary" type="submit" className="mt-4 w-100">
-                        Login
+                        Registrarse
                     </Button>
                 </Form>
-                <div className="text-center mt-3">
-                    <Link to="/register">¿No tienes una cuenta? Regístrate</Link>
-                </div>
             </Card>
         </Container>
     );
 };
 
-export default Login;
+export default Register;

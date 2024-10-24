@@ -10,13 +10,13 @@ export const fetchPosts = async () => {
     return await axios.get(`${API_URL}/posts`);
 };
 
-export const createPost = async (postData, token) => {
-    return await axios.post(`${API_URL}/posts/create`, postData, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    });
-};
+// export const createPost = async (postData, token) => {
+//     return await axios.post(`${API_URL}/posts/create`, postData, {
+//         headers: {
+//             Authorization: `Bearer ${token}`,
+//         }
+//     });
+// };
 
 // Eliminar un post
 export const deletePost = async (postId, token) => {
@@ -49,4 +49,47 @@ export const addComment = async (commentData, token) => {
             Authorization: `Bearer ${token}`,
         },
     });
+};
+
+// Dar o quitar like a un post
+export const toggleLike = async (postId, token) => {
+    return await axios.put(`${API_URL}/posts/${postId}/like`, {}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+
+// Obtener perfil del usuario
+export const fetchUserProfile = async (token) => {
+    return await axios.get(`${API_URL}/users/profile`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+// Actualizar perfil del usuario
+export const updateUserProfile = async (profileData, token) => {
+    return await axios.put(`${API_URL}/users/profile`, profileData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+// Crear un nuevo post con imagen
+export const createPost = async (postData, token) => {
+    return await axios.post(`${API_URL}/posts/create`, postData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Importante para enviar archivos
+        },
+    });
+};
+
+// Registrar un nuevo usuario
+export const registerUser = async (userData) => {
+    return await axios.post(`${API_URL}/users/register`, userData);
 };

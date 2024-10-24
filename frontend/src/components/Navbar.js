@@ -13,6 +13,7 @@ const Navigation = () => {
     const logoutHandler = () => {
         localStorage.removeItem('token'); // Eliminar el token
         localStorage.removeItem('userName'); // Eliminar el nombre del usuario
+        localStorage.removeItem('userId'); // Eliminar el ID del usuario
         navigate('/'); // Redirigir al inicio
     };
 
@@ -21,7 +22,7 @@ const Navigation = () => {
             <Navbar.Brand href="/">University Forum</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto">
+                <Nav className="ms-auto">
                     <LinkContainer to="/">
                         <Nav.Link>Posts</Nav.Link>
                     </LinkContainer>
@@ -32,6 +33,10 @@ const Navigation = () => {
                                 <Nav.Link>Crear Post</Nav.Link>
                             </LinkContainer>
                             <NavDropdown title={userName || "Cuenta"} id="basic-nav-dropdown">
+                                <LinkContainer to="/profile">
+                                    <NavDropdown.Item>Perfil</NavDropdown.Item>
+                                </LinkContainer>
+                                <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={logoutHandler}>Cerrar Sesión</NavDropdown.Item>
                             </NavDropdown>
                         </>
